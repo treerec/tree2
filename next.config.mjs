@@ -11,6 +11,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  distDir: 'out',
+  basePath: process.env.NODE_ENV === 'production' ? '/tree2' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/tree2' : '',
 }
 
 export default nextConfig
