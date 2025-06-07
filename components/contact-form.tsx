@@ -8,19 +8,41 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Phone, Mail, MessageSquare } from "lucide-react"
-import { submitContactForm } from "@/app/actions"
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
     setIsSubmitting(true)
+    
+    const formData = new FormData(e.currentTarget)
+    const data = {
+      firstName: formData.get("firstName") as string,
+      lastName: formData.get("lastName") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      service: formData.get("service") as string,
+      message: formData.get("message") as string,
+    }
+
     try {
-      await submitContactForm(formData)
+      // For static sites, you could:
+      // 1. Use a service like Formspree, Netlify Forms, or EmailJS
+      // 2. Send to a third-party API
+      // 3. Store in localStorage and show success message
+      
+      // Example with console log (replace with actual service)
+      console.log("Contact form submission:", data)
+      
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      
       setSubmitted(true)
     } catch (error) {
       console.error("Error submitting form:", error)
+      alert("There was an error submitting the form. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -99,7 +121,7 @@ export function ContactForm() {
               <CardTitle className="text-2xl">Request a Quote</CardTitle>
             </CardHeader>
             <CardContent className="p-8">
-              <form action={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="firstName">First Name *</Label>
